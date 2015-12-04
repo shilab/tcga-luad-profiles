@@ -4,7 +4,13 @@ setup:
 	mkdir -p data
 	mkdir -p results
 
-Data: data/RNASeq data/sample_subtype
+Data: data/RNASeq data/SNP data/sample_subtype data/tcga_id_snp_filename
+
+data/tcga_id_snp_filename: data/broad.mit.edu_LUAD.Genome_Wide_SNP_6.sdrf.txt
+	cut -f 1,2,31,32 data/broad.mit.edu_LUAD.Genome_Wide_SNP_6.sdrf.txt > data/tcga_id_snp_filename
+
+data/broad.mit.edu_LUAD.Genome_Wide_SNP_6.sdrf.txt:
+	wget -P ./data https://tcga-data.nci.nih.gov/tcgafiles/ftp_auth/distro_ftpusers/anonymous/tumor/luad/cgcc/broad.mit.edu/genome_wide_snp_6/snp/broad.mit.edu_LUAD.Genome_Wide_SNP_6.mage-tab.1.2012.0/broad.mit.edu_LUAD.Genome_Wide_SNP_6.sdrf.txt
 
 data/RNASeq: 
 	mkdir -p data/RNASeq
