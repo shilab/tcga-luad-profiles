@@ -24,4 +24,6 @@ filter_zeros <- function(gene_expr, percent)
 
 filtered_genes <- apply(ExpressionMatrix, 1, filter_zeros, 0.9)
 FilteredExpressionMatrix <- ExpressionMatrix[filtered_genes,]
-write.table(FilteredExpressionMatrix,paste(input_file,'.filtered',sep=""), quote=F,sep="\t",row.names=T,col.names=T)
+FilteredExpressionMatrix <- cbind(rownames(FilteredExpressionMatrix), FilteredExpressionMatrix)
+colnames(FilteredExpressionMatrix)[1] = "ID"
+write.table(FilteredExpressionMatrix,paste(input_file,'.filtered',sep=""), quote=F,sep="\t",row.names=F,col.names=T)
