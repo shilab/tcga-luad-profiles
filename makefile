@@ -45,7 +45,16 @@ data/wilkerson.2012.LAD.predictor.centroids.csv.zip:
 	unzip -d data data/wilkerson.2012.LAD.predictor.centroids.csv.zip
 
 data/unc.edu_LUAD.IlluminaHiSeq_RNASeqV2.1.15.0.sdrf.txt:
-	wget https://tcga-data.nci.nih.gov/tcgafiles/ftp_auth/distro_ftpusers/anonymous/tumor/luad/cgcc/unc.edu/illuminahiseq_rnaseqv2/rnaseqv2/unc.edu_LUAD.IlluminaHiSeq_RNASeqV2.mage-tab.1.15.0/unc.edu_LUAD.IlluminaHiSeq_RNASeqV2.1.15.0.sdrf.txt
+	wget -P ./data https://tcga-data.nci.nih.gov/tcgafiles/ftp_auth/distro_ftpusers/anonymous/tumor/luad/cgcc/unc.edu/illuminahiseq_rnaseqv2/rnaseqv2/unc.edu_LUAD.IlluminaHiSeq_RNASeqV2.mage-tab.1.15.0/unc.edu_LUAD.IlluminaHiSeq_RNASeqV2.1.15.0.sdrf.txt
+
+data/nationwidechildrens.org_clinical_patient_luad.txt:
+	wget -P ./data https://tcga-data.nci.nih.gov/tcgafiles/ftp_auth/distro_ftpusers/anonymous/tumor/luad/bcr/biotab/clin/nationwidechildrens.org_clinical_patient_luad.txt
+
+data/raw_covariates: data/nationwidechildrens.org_clinical_patient_luad.txt
+	cut -f 2,7 data/nationwidechildrens.org_clinical_patient_luad.txt | sed 1,3d > data/raw_covariates
+
+data/covariates: data/raw_covariates
+	python code/create_covariates.py data/raw_covariates > data/covariates
 
 data/sample_subtype: data/nature13385-s2.xlsx
 	python code/get_subtypes.py > data/sample_subtype
