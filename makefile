@@ -119,6 +119,9 @@ data/snp_id_name: data/GenomeWideSNP_6.na35.annot.csv
 data/SNP_positions: data/GenomeWideSNP_6.na35.annot.csv
 	awk '$$0!~"#" {print}' data/GenomeWideSNP_6.na35.annot.csv | cut -d',' -f 1,2,3,4 | sed -e 's/"//g' -e 's/,/\t/g' > data/SNP_positions
 
+data/SNP_positions.meqtl: data/SNP_positions
+	cat <(echo -e "SNP\tchr\tposition") <(tail -n +2 data/SNP_positions | cut -f 2,3,4) > data/SNP_positions.meqtl
+
 data/Homo_sapiens.GRCh37.75.gtf:
 	wget -P ./data ftp://ftp.ensembl.org/pub/release-75/gtf/homo_sapiens/Homo_sapiens.GRCh37.75.gtf.gz
 	gunzip data/Homo_sapiens.GRCh37.75.gtf.gz
