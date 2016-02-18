@@ -37,9 +37,6 @@ data/SNP:
 	ls data/broad.mit.edu_LUAD.Genome_Wide_SNP_6.Level_2.{37.2012.0,58.2002.0,238.2005.0,183.2002.0,258.2006.0,423.2011.0,222.2005.0,160.2002.0,232.2005.0,84.2010.0,119.2010.0,166.2002.0,264.2007.0,196.2002.0,278.2008.0,204.2004.0,406.2011.0,144.2010.0,52.2009.0,213.2004.0}.tar.gz |xargs -I % -n1 tar -xvzf % -C data/SNP --strip-components=1
 	rm data/broad.mit.edu_LUAD.Genome_Wide_SNP_6.*.tar.gz
 
-data/nature13385-s2.xlsx:
-	wget -P ./data http://www.nature.com/nature/journal/v511/n7511/extref/nature13385-s2.xlsx
-
 data/wilkerson.2012.LAD.predictor.centroids.csv.zip:
 	wget -P ./data http://cancer.unc.edu/nhayes/publications/adenocarcinoma.2012/wilkerson.2012.LAD.predictor.centroids.csv.zip
 	unzip -d data data/wilkerson.2012.LAD.predictor.centroids.csv.zip
@@ -55,9 +52,6 @@ data/raw_covariates: data/nationwidechildrens.org_clinical_patient_luad.txt
 
 data/covariates: data/raw_covariates
 	python code/create_covariates.py data/raw_covariates > data/covariates
-
-data/sample_subtype: data/nature13385-s2.xlsx
-	python code/get_subtypes.py > data/sample_subtype
 
 data/ExpressionMatrix: data/RNASeq-new code/ExpressionMatrix.py
 	python code/ExpressionMatrix.py 'data/RNASeq-new/*01A*' > data/ExpressionMatrix
@@ -123,4 +117,24 @@ data/snp_id_name: data/GenomeWideSNP_6.na35.annot.csv
 	cut -d',' -f 1,2 data/GenomeWideSNP_6.na35.annot.csv | awk '$$0!~"#" {print}'| sed -e 's/"//g' -e 's/,/\t/g' > data/snp_id_name
 
 data/SNP_positions: data/GenomeWideSNP_6.na35.annot.csv
-	awk '$$0!~"#" {print}' data/GenomeWideSNP_6.na35.annot.csv | cut -d',' -f 2,3,4 | sed -e 's/"//g' -e 's/,/\t/g' > data/SNP_positions
+	awk '$$0!~"#" {print}' data/GenomeWideSNP_6.na35.annot.csv | cut -d',' -f 1,2,3,4 | sed -e 's/"//g' -e 's/,/\t/g' > data/SNP_positions
+
+data/Homo_sapiens.GRCh37.75.gtf:
+	wget -P ./data ftp://ftp.ensembl.org/pub/release-75/gtf/homo_sapiens/Homo_sapiens.GRCh37.75.gtf.gz
+	gunzip data/Homo_sapiens.GRCh37.75.gtf.gz
+
+data/gene_names: data/Homo_sapiens.GRCh37.75.gtf
+	awk '$$2=="protein_coding" && $$3=="gene" {print}' data/Homo_sapiens.GRCh37.75.gtf | cut -f 9 | cut -d' ' -f 4| sed -e 's/"//g' -e 's/;//g' > data/gene_names	
+
+data/gene_info: data/Homo_sapiens.GRCh37.75.gtf
+	awk '$$2=="protein_coding" && $$3=="gene" {print}' data/Homo_sapiens.GRCh37.75.gtf | cut -f 1,4,5,7 > data/gene_info
+
+data/gene_positions: data/gene_info data/gene_names
+	paste data/gene_names data/gene_info > data/gene_positions
+
+data/PI_covariates:
+	cat data/covariates.PI.out <(tail -n +2 data/PI_expression_pc_covariates) <(tail -n +2 data/genotype_PI_pc_covariates) > data/PI_covariates
+data/PP_covariates:
+	cat data/covariates.PP.out <(tail -n +2 data/PP_expression_pc_covariates) <(tail -n +2 data/genotype_PP_pc_covariates) > data/PP_covariates
+data/TRU_covariates:
+	cat data/covariates.TRU.out <(tail -n +2 data/TRU_expression_pc_covariates) <(tail -n +2 data/genotype_TRU_pc_covariates) > data/TRU_covariates
