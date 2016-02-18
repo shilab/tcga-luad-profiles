@@ -1,4 +1,6 @@
 # tcga-luad-profiles
 
 Dependancies:  
-openpyxl 2.2.6
+[PEER v1.3](https://github.com/PMBio/peer)
+
+GenomeWideSNP_6.na35.annot.csv
