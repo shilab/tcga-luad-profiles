@@ -132,6 +132,9 @@ data/gene_info: data/Homo_sapiens.GRCh37.75.gtf
 data/gene_positions: data/gene_info data/gene_names
 	paste data/gene_names data/gene_info > data/gene_positions
 
+data/gene_positions.meqtl: data/gene_positions
+	cat <(echo -e "gene\tchr\tstart\tend") <(cut -f 1,2,3,4 data/gene_positions) > data/gene_positions.meqtl
+
 data/PI_covariates:
 	cat data/covariates.PI.out <(tail -n +2 data/PI_expression_pc_covariates) <(tail -n +2 data/genotype_PI_pc_covariates) > data/PI_covariates
 data/PP_covariates:
