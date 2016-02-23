@@ -26,4 +26,4 @@ filtered_snps <- apply(SNPMatrix, 1, filter_NA, 0.9)
 FilteredSNPMatrix<- SNPMatrix[filtered_snps,]
 FilteredSNPMatrix <- cbind(rownames(FilteredSNPMatrix), FilteredSNPMatrix)
 colnames(FilteredSNPMatrix)[1] = "ID"
-write.table(FilteredSNPMatrix,paste(input_file,'.filtered',sep=""), quote=F,sep="\t",row.names=F,col.names=T)
+write.table(FilteredSNPMatrix,paste(input_file,'.NAfiltered',sep=""), quote=F,sep="\t",row.names=F,col.names=T)
