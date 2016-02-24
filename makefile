@@ -12,7 +12,7 @@ code/ExpressionMatrix.py:
 code/overlap.py:
 	wget -P ./code -nd --no-check-certificate https://raw.githubusercontent.com/shilab/sample_overlap/a64f2c7ef4796875b80aa7e390e9ec8efbc25cb1/overlap/overlap.py
 
-Data: data/RNASeq data/SNP data/sample_subtype data/tcga_id_snp_filename data/wilkerson.2012.LAD.predictor.centroids.csv.zip data/CentroidMatrix.mediancenter.head data/ExpressionMatrix.filtered.PI.out
+Data: data/RNASeq data/SNP data/tcga_id_snp_filename data/wilkerson.2012.LAD.predictor.centroids.csv.zip data/CentroidMatrix.mediancenter.head data/ExpressionMatrix.filtered.PI.out
 
 data/tcga_id_snp_filename: data/broad.mit.edu_LUAD.Genome_Wide_SNP_6.sdrf.txt
 	cut -f 1,2,31,32 data/broad.mit.edu_LUAD.Genome_Wide_SNP_6.sdrf.txt > data/tcga_id_snp_filename
