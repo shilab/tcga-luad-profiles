@@ -1,19 +1,20 @@
 library(peer)
 args = commandArgs(trailingOnly=TRUE)
 
-if (length(args)!=2)
+if (length(args)!=3)
 {
-  stop("Input file and subtype must be supplied.", call.=FALSE)
+  stop("Input file, subtype, and number of factors must be supplied.", call.=FALSE)
 }
 
 input_file = args[1]
 subtype = args[2]
+numfactors = args[3]
 
 expr <- read.table(input_file, header=T, row.names=1, check.names=F)
 
 model = PEER()
 PEER_setPhenoMean(model,t(as.matrix(expr)))
-PEER_setNk(model,30)
+PEER_setNk(model,numfactors)
 PEER_update(model)
 
 factors = PEER_getX(model)
