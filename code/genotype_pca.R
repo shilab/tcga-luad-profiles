@@ -30,7 +30,7 @@ genotype_pc <- function(snp_filename, subtype)
 
 	p1p2 <- cbind(snp_pc$loadings[,1],snp_pc$loadings[,2])
 
-	race <- read.table('id-race',header=F,row.names=1,na.strings='NA',stringsAsFactors=T)
+	race <- read.table('data/id-race',header=F,row.names=1,na.strings='NA',stringsAsFactors=T)
 	rownames(race) <- paste('x', rownames(race),sep='')
 	pc1pc2<-cbind.data.frame(p1p2,race$V2[match(rownames(p1p2),rownames(race))])
 	colnames(pc1pc2) <- c('PC1','PC2','Race')
